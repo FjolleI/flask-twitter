@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    <title>Document</title>
+</head>
+<body>
+   
+    <div id="wrapper">
+
+        Welcome {{user_data['first_name']}}!
+    
+        <p><a href="/logout"><button class="button-1">Logout</button></a></p>
+    
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+        <div class="user-table">
+            
+            <div class="user-info-box">
+                
+                <form id="myForm" action='/write_tweet', method='post'>
+                    
+                    <p>MSG:</p>
+
+                    <div class="form-item">
+                        <textarea name="tweet_content" cols="50" rows="5"></textarea>
+                    <p><input class="button-1" type='submit' name="formAction" value='Write' class="button"></p>
+                    </div>  
+                </form>
+            </div>
+
+
+
+    
+            <table>
+                <tr>
+                    <th>MSG</th>
+                    <th>Author</th>
+                    <th>Nr of likes</th>
+                    <th>Actions</th>
+                    
+                </tr>
+                {% for tweet in all_tweets %}
+                <tr>
+                    <td>{{tweet['content']}}</td>
+                    <td>{{tweet['first_name'] + " " + tweet['last_name']}}</td>
+                    <td>{{tweet['like_count']}}</td>
+                    
+                    <td>
+                        <form action='/process', method='post'>
+                            <input type="hidden" name="tweet-id" value="{{ tweet['id_tweet'] }}">
+                            {% if session['user_id'] == tweet['author'] %}
+                            
+                            <input class="button-1" name="action" type='submit' value='Delete' class="button">
+                            {% endif %}
+                            <input class="button-1" name="action" type='submit' value='Show' class="button">
+
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <br><br>  
+        </div>
+    </div>
+</body>
+</html>

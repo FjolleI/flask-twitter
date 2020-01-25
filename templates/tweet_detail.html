@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    <title>Tweet Details</title>
+</head>
+<body>
+    <div id="wrapper">
+        <p></p>Content: {{tweet_data['content']}}</p>
+        </p>Author: {{tweet_data['first_name']}} {{tweet_data['last_name']}}</p>
+        
+                
+            {% if tweet_data['id_tweet'] in liked_tweet_ids %}
+            <a href="/unlike/{{tweet_data['id_tweet']}}">
+                <button class="button-1">Unike Tweet</button></a>
+            {% else %}
+            <a href="/like/{{tweet_data['id_tweet']}}">
+                <button class="button-1">Like Tweet</button></a>
+            {% endif %}
+        
+        <p>
+            Users who have liked this Tweet:
+            
+            {%for user in range( selflike|length - 1, -1, -1)%}
+            
+    
+        <ul>
+            <li>{{selflike[user]['first_name']}} {{selflike[user]['last_name']}}</li>
+        </ul>
+        {% endfor %}
+        </p>
+      
+
+    </div>
+</body>
+</html>
